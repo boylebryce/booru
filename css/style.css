@@ -1,0 +1,13 @@
+#imageActions {
+    display: none;
+}
+
+img {
+    max-height: 500px;
+    max-width: 500px;
+    display: block;
+}
+
+a {
+    display: block;
+}

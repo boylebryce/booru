@@ -1,5 +1,24 @@
 <?php
 
+    require('php/keys.php');
+
+    try {
+        $db = new PDO($dsn, $db_user, $db_pw);
+        $query = 'SELECT * FROM `images`';
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+    }
+    catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    
+    $images = '';
+    foreach ($result as $img) {
+        $images .= '<img src="img/' . $img['img_path'] . '">';
+    }
+
 ?>
 
 <!doctype html>
@@ -13,14 +32,7 @@
         <script src="js/scripts.js"></script>
     </head>
     <body>
-        <img id="pastedImage" src="">
-        <div id="imageActions">
-            <form id="submitImageForm" method="POST" action="upload.php">
-                <input type="submit" value="Upload">
-                <input type="text" id="imageData" name="imageData" style="display:none">
-            </form>
-            <button id="resetImage">Reset</button>
-        </div>
-        <a href="images.php">View uploaded images</a>
+        <?= $images ?>
+        <a href="main.php">Back to main</a>
     </body>
 </html>
