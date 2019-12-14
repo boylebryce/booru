@@ -76,7 +76,6 @@
         <form method="POST" action="tag.php">
             <input type="submit" value="Tag this image">
             <input type="text" value="<?= $img_id ?>" name="img_id" style="display:none">
-            <input type="text" value="<?= $img_path ?>" name="img_path" style="display:none">
         </form>
         <?php } ?>
     </body>
