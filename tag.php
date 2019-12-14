@@ -6,7 +6,7 @@
 
     // need to add new submitted tags
     if (isset($_POST['img_id']) && isset($_POST['tags'])) {
-        $img_id = isset($_POST['img_id']) ? $_POST['img_id'] : $_GET['img_id'];
+        $img_id = $_POST['img_id'];
         try {
             $db = new PDO($dsn, $db_user, $db_pw);
 
@@ -79,7 +79,7 @@
             // get existing tags
             $query = 'SELECT * FROM `imagetags` WHERE `imgID` = :img_id';
             $statement = $db->prepare($query);
-            $statement->bindValue(':img_id', $_POST['img_id']);
+            $statement->bindValue(':img_id', $img_id);
             $statement->execute();
             $result = $statement->fetchAll();
 

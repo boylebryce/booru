@@ -16,7 +16,7 @@
     
     $images = '';
     foreach ($result as $img) {
-        $images .= '<img src="img/' . $img['img_path'] . '">';
+        $images .= '<a href="tag.php?img_id=' . $img['img_id'] . '"><img src="img/' . $img['img_path'] . '"></a>';
     }
 
 ?>
@@ -32,6 +32,7 @@
         <script src="js/scripts.js"></script>
     </head>
     <body>
+        <h2>Click an image to tag it</h2>
         <?= $images ?>
         <a href="main.php">Back to main</a>
     </body>
