@@ -1,10 +1,11 @@
 <?php
 
     require('php/keys.php');
+    require('php/utilities.php');
 
     $current_tags = '';
 
-    // need to add new submitted tags
+    // add add new submitted tags to tags table and apply to image by updating imagetags table
     if (isset($_POST['img_id']) && isset($_POST['tags'])) {
         $img_id = $_POST['img_id'];
         try {
@@ -62,19 +63,38 @@
         }
     }
 
+    // remove tags from image by removing img_id, tag_id pair from imagetags table
+    if (isset($_POST['selected_tags'])) {
+        foreach ($_POST['selected_tags'] as $tag) {
+            try {
+                $db = new PDO($dsn, $db_user, $db_pw);
+                $query = 'DELETE FROM `imagetags` WHERE `imgID` = :img_id AND `tagID` = :tag_id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':img_id', $_POST['img_id']);
+                $statement->bindValue(':tag_id', $tag);
+                $statement->execute();
+            }
+            catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+    }
+
     // get img_path and existing tags to display on page
     if (isset($_POST['img_id']) || isset($_GET['img_id'])) {
         $img_id = isset($_POST['img_id']) ? $_POST['img_id'] : $_GET['img_id'];
-        $img_path = '';
+        $img_path = isset($_POST['img_path']) ? $_POST['img_path'] : '';
         try {
             $db = new PDO($dsn, $db_user, $db_pw);
 
-            // get img_path
-            $query = 'SELECT * FROM `images` WHERE `img_id` = :img_id';
-            $statement = $db->prepare($query);
-            $statement->bindValue(':img_id', $img_id);
-            $statement->execute();
-            $img_path = $statement->fetch()['img_path'];
+            // get img_path if not already set
+            if ($img_path === '') {
+                $query = 'SELECT * FROM `images` WHERE `img_id` = :img_id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':img_id', $img_id);
+                $statement->execute();
+                $img_path = $statement->fetch()['img_path'];
+            }
 
             // get existing tags
             $query = 'SELECT * FROM `imagetags` WHERE `imgID` = :img_id';
@@ -89,7 +109,7 @@
                 $statement->bindValue(':tag_id', $tag['tagID']);
                 $statement->execute();
                 $label = $statement->fetch();
-                $current_tags .= '<li>' . $label['tag_label'] . '</li>';
+                $current_tags .= '<li><input type="checkbox" name="selected_tags[]" value="' . $label['tag_id'] . '">' . $label['tag_label'] . '</li>';
             }
             $statement->closeCursor();
         }
@@ -97,7 +117,6 @@
             echo $e->getMessage();
         }
     }
-
 
 ?>
 
@@ -115,9 +134,14 @@
         <?php if (isset($img_id)) { ?>
         <img src="<?= 'img/' . $img_path ?>">
         <h2>Current tags:</h2>
-        <ul>
-            <?= $current_tags ?>
-        </ul>
+        <form method="POST" action="editor.php">
+            <ul>
+                <?= $current_tags ?>
+            </ul>
+            <input type="text" name="img_id" value="<?= $img_id ?>" style="display:none">
+            <input type="text" name="img_path" value="<?= $img_path ?>" style="display:none">
+            <input type="submit" value="Delete selected tags">
+        </form>
         <form method="POST" action="editor.php">
             <label>Add space-separated tags here</label>
             <input type="text" name="tags">
