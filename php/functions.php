@@ -15,4 +15,8 @@
         return $key . (!empty($extension) ? '.' . $extension : '');
     }
 
+    function dbprint($string) {
+        echo '<p>' . $string . '</p>';
+    }
+
 ?>

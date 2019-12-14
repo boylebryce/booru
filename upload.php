@@ -2,45 +2,35 @@
 
     require_once('php/keys.php');
     require_once('php/login.php');
-    require_once('php/utilities.php');
+    require_once('php/functions.php');
 
-    $preview = '';
-    $img_path = '';
-    $img_id = '';
+    if (isset($_FILES['userfile'])) {
+        $uploaddir = 'img/';
+        $uploadext = explode('/', $_FILES['userfile']['type'])[1];
+        $filename = random_filename(16, $uploaddir, $uploadext);
+        $uploadfile = $uploaddir . $filename;
+        
 
-    if (isset($_POST['imageData'])) {
-        $data = $_POST['imageData'];
-        if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
-            $data = substr($data, strpos($data, ',') + 1);
-            $type = strtolower($type[1]); // jpg, png, gif
-        
-            if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
-                throw new \Exception('invalid image type');
-            }
-        
-            $data = base64_decode($data);
+        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+            dbprint('Successfully uploaded ' . $uploadfile);
         }
         else {
-            throw new \Exception('did not match data URI with image data');
+            dbprint('Failed to upload ' . $uploadfile);
         }
-        
-        $img_path = random_filename(16, 'img', $type);
-        file_put_contents('img/' . $img_path, $data);
 
         try {
             $db = new PDO($dsn, $db_user, $db_pw);
             $query = 'INSERT INTO `images` (`img_id`, `img_path`, `img_tagcount`) VALUES (NULL, :img_path, 0);';
             $statement = $db->prepare($query);
-            $statement->bindValue(':img_path', $img_path);
+            $statement->bindValue(':img_path', $filename);
             $result = $statement->execute();
             $img_id = $db->lastInsertId();
-
             $statement->closeCursor();
         }
         catch (PDOException $e) {
             echo $e->getMessage();
         }
-        $preview = '<img src="img/' . $img_path . '">';
+        $preview = '<img src="' . $uploadfile . '">';
     }
 
 ?>
@@ -57,8 +47,8 @@
     </head>
     <body>
     <?php if(isset($_SESSION['user'])) { ?>
-        <?= $preview ?>
-        <?php if ($img_id !== '') { ?>
+        <?= isset($preview) ? $preview : '' ?>
+        <?php if (isset($img_id)) { ?>
         <form method="POST" action="editor.php">
             <input type="submit" value="Tag this image">
             <input type="text" value="<?= $img_id ?>" name="img_id" style="display:none">

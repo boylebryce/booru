@@ -8,7 +8,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Booru</title>
         <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
         <link rel="stylesheet" href="css/style.css">
@@ -16,14 +16,13 @@
     </head>
     <body>
     <?php if (isset($_SESSION['user'])) { ?>
-        <img id="pastedImage" src="">
-        <div id="imageActions">
-            <form id="submitImageForm" method="POST" action="upload.php">
-                <input type="submit" value="Upload">
-                <input type="text" id="imageData" name="imageData" style="display:none">
-            </form>
-            <button id="resetImage">Reset</button>
+        <div id="paste-preview-area" style="display:none">
+            <img id="paste-preview">
         </div>
+        <form id="upload-form" method="POST" action="upload.php" enctype="multipart/form-data">
+            <input type="file" name="userfile">
+            <input type="submit" value="Upload File">
+        </form>
         <form method="GET" action="images.php">
             <label for="search">Search for tags</label>
             <input type="text" name="search">

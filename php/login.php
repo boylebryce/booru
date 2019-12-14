@@ -23,8 +23,8 @@
 
     $login_form = 
     '<div id="login-form">
-        <h2>One Piece Booru v0.1</h2>
-        <form method="POST" action="main.php">
+        <h2>One Piece Booru v0.2</h2>
+        <form method="POST" action="index.php">
             <table>
             <tr>
                 <td>Username</td>

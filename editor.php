@@ -2,7 +2,7 @@
 
     require_once('php/keys.php');
     require_once('php/login.php');
-    require_once('php/utilities.php');
+    require_once('php/functions.php');
 
     $current_tags = '';
 
@@ -125,7 +125,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Booru</title>
         <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
         <link rel="stylesheet" href="css/style.css">
@@ -143,7 +143,7 @@
             <input type="submit" value="Submit">
         </form>
         <div>
-            <a href="main.php">Back to main</a>
+            <a href="index.php">Back to main</a>
             <a href="images.php">View uploaded images</a>
         </div>
         <h2>Current tags:</h2>
