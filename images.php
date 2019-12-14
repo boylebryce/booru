@@ -2,21 +2,76 @@
 
     require('php/keys.php');
 
-    try {
-        $db = new PDO($dsn, $db_user, $db_pw);
-        $query = 'SELECT * FROM `images`';
-        $statement = $db->prepare($query);
-        $statement->execute();
-        $result = $statement->fetchAll();
-        $statement->closeCursor();
+    // display images with tags in search
+    if (isset($_GET['search'])) {
+        try {
+            $db = new PDO($dsn, $db_user, $db_pw);
+
+            // separate tags by space-delimiter
+            $search_tags = explode(' ', $_GET['search']);
+            $tags = array(); // tag_id => tag_label
+            $images = array(); // img_id => img_path
+            $image_ids = array();
+
+            // get tag_id for each tag
+            foreach ($search_tags as $tag_label) {
+                $query = 'SELECT * FROM `tags` WHERE `tag_label` = :tag_label';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':tag_label', $tag_label);
+                $statement->execute();
+                $tags[$statement->fetch()['tag_id']] = $tag_label;
+            }
+
+            // get img_id for every image that matches tag_id
+            foreach ($tags as $tag_id => $tag_label) {
+                $query = 'SELECT * FROM `imagetags` WHERE `tagID` = :tag_id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':tag_id', $tag_id);
+                $statement->execute();
+                $result = $statement->fetchAll();
+                foreach ($result as $image) {
+                    $image_ids[] = $image['imgID'];
+                }
+            }
+
+            // populate images array with img_path
+            foreach ($image_ids as $img_id) {
+                $query = 'SELECT * FROM `images` WHERE `img_id` = :img_id';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':img_id', $img_id);
+                $statement->execute();
+                $images[$img_id] = $statement->fetch()['img_path'];
+            }
+            $statement->closeCursor();
+
+            $image_display = '';
+            foreach ($images as $img_id => $img_path) {
+                $image_display .= '<a href="editor.php?img_id=' . $img_id . '"><img src="img/' . $img_path . '"></a>';
+            }
+        }
+        catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
-    catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-    
-    $images = '';
-    foreach ($result as $img) {
-        $images .= '<a href="editor.php?img_id=' . $img['img_id'] . '"><img src="img/' . $img['img_path'] . '"></a>';
+
+    // display all images
+    else {
+        try {
+            $db = new PDO($dsn, $db_user, $db_pw);
+            $query = 'SELECT * FROM `images`';
+            $statement = $db->prepare($query);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $statement->closeCursor();
+        }
+        catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        
+        $image_display = '';
+        foreach ($result as $img) {
+            $image_display .= '<a href="editor.php?img_id=' . $img['img_id'] . '"><img src="img/' . $img['img_path'] . '"></a>';
+        }
     }
 
 ?>
@@ -33,7 +88,7 @@
     </head>
     <body>
         <h2>Click an image to tag it</h2>
-        <?= $images ?>
+        <?= $image_display ?>
         <a href="main.php">Back to main</a>
     </body>
 </html>

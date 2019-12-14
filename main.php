@@ -21,6 +21,10 @@
             </form>
             <button id="resetImage">Reset</button>
         </div>
+        <form method="GET" action="images.php">
+            <label for="search">Search for tags</label>
+            <input type="text" name="search">
+        </form>
         <a href="images.php">View uploaded images</a>
     </body>
 </html>
