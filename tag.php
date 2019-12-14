@@ -6,6 +6,7 @@
 
     // need to add new submitted tags
     if (isset($_POST['img_id']) && isset($_POST['tags'])) {
+        $img_id = isset($_POST['img_id']) ? $_POST['img_id'] : $_GET['img_id'];
         try {
             $db = new PDO($dsn, $db_user, $db_pw);
 
@@ -61,10 +62,21 @@
         }
     }
 
-    // get existing tags to display on page
-    if (isset($_POST['img_id'])) {
+    // get img_path and existing tags to display on page
+    if (isset($_POST['img_id']) || isset($_GET['img_id'])) {
+        $img_id = isset($_POST['img_id']) ? $_POST['img_id'] : $_GET['img_id'];
+        $img_path = '';
         try {
             $db = new PDO($dsn, $db_user, $db_pw);
+
+            // get img_path
+            $query = 'SELECT * FROM `images` WHERE `img_id` = :img_id';
+            $statement = $db->prepare($query);
+            $statement->bindValue(':img_id', $img_id);
+            $statement->execute();
+            $img_path = $statement->fetch()['img_path'];
+
+            // get existing tags
             $query = 'SELECT * FROM `imagetags` WHERE `imgID` = :img_id';
             $statement = $db->prepare($query);
             $statement->bindValue(':img_id', $_POST['img_id']);
@@ -100,8 +112,8 @@
         <script src="js/scripts.js"></script>
     </head>
     <body>
-        <?php if (isset($_POST['img_id'])) { ?>
-        <img src="<?= 'img/' . $_POST['img_path'] ?>">
+        <?php if (isset($img_id)) { ?>
+        <img src="<?= 'img/' . $img_path ?>">
         <h2>Current tags:</h2>
         <ul>
             <?= $current_tags ?>
@@ -109,8 +121,8 @@
         <form method="POST" action="tag.php">
             <label>Add space-separated tags here</label>
             <input type="text" name="tags">
-            <input type="text" name="img_id" value="<?= $_POST['img_id'] ?>" style="display:none">
-            <input type="text" name="img_path" value="<?= $_POST['img_path'] ?>" style="display:none">
+            <input type="text" name="img_id" value="<?= $img_id ?>" style="display:none">
+            <input type="text" name="img_path" value="<?= $img_path ?>" style="display:none">
             <input type="submit" value="Submit">
         </form>
         <?php } ?>
