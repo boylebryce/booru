@@ -1,7 +1,8 @@
 <?php
 
-    require('php/keys.php');
-    require('php/utilities.php');
+    require_once('php/keys.php');
+    require_once('php/login.php');
+    require_once('php/utilities.php');
 
     $current_tags = '';
 
@@ -128,11 +129,23 @@
         <title>Booru</title>
         <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
         <link rel="stylesheet" href="css/style.css">
-        <script src="js/scripts.js"></script>
+        
     </head>
     <body>
+    <?php if (isset($_SESSION['user'])) { ?>
         <?php if (isset($img_id)) { ?>
         <img src="<?= 'img/' . $img_path ?>">
+        <form method="POST" action="editor.php">
+            <label>Add space-separated tags here</label>
+            <input type="text" name="tags">
+            <input type="text" name="img_id" value="<?= $img_id ?>" style="display:none">
+            <input type="text" name="img_path" value="<?= $img_path ?>" style="display:none">
+            <input type="submit" value="Submit">
+        </form>
+        <div>
+            <a href="main.php">Back to main</a>
+            <a href="images.php">View uploaded images</a>
+        </div>
         <h2>Current tags:</h2>
         <form method="POST" action="editor.php">
             <ul>
@@ -142,15 +155,7 @@
             <input type="text" name="img_path" value="<?= $img_path ?>" style="display:none">
             <input type="submit" value="Delete selected tags">
         </form>
-        <form method="POST" action="editor.php">
-            <label>Add space-separated tags here</label>
-            <input type="text" name="tags">
-            <input type="text" name="img_id" value="<?= $img_id ?>" style="display:none">
-            <input type="text" name="img_path" value="<?= $img_path ?>" style="display:none">
-            <input type="submit" value="Submit">
-        </form>
         <?php } ?>
-        <a href="main.php">Back to main</a>
-        <a href="images.php">View uploaded images</a>
+    <?php } else { echo $login_form; } ?>
     </body>
 </html>

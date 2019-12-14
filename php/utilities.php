@@ -1,14 +1,5 @@
 <?php
 
-    function delete_imgtag($db, $img_id, $tag_id) {
-        $query = 'DELETE FROM `imagetags` WHERE `imgID` = :img_id AND `tagID` = :tag_id';
-        $statement = $db->execute($query);
-        $statement->bindValue(':img_id', $img_id);
-        $statement->bindValue(':tag_id', $tag_id);
-        $statement->execute();
-        $statement->closeCursor();
-    }
-
     function random_filename($length, $directory = '', $extension = '') {
         $dir = $directory;
     

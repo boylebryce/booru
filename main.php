@@ -1,5 +1,7 @@
 <?php
 
+    require_once('php/login.php');
+
 ?>
 
 <!doctype html>
@@ -13,6 +15,7 @@
         <script src="js/scripts.js"></script>
     </head>
     <body>
+    <?php if (isset($_SESSION['user'])) { ?>
         <img id="pastedImage" src="">
         <div id="imageActions">
             <form id="submitImageForm" method="POST" action="upload.php">
@@ -26,5 +29,6 @@
             <input type="text" name="search">
         </form>
         <a href="images.php">View uploaded images</a>
+    <?php } else { echo $login_form; } ?>
     </body>
 </html>

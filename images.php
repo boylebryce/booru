@@ -1,6 +1,7 @@
 <?php
 
-    require('php/keys.php');
+    require_once('php/keys.php');
+    require_once('php/login.php');
 
     // display images with tags in search
     if (isset($_GET['search'])) {
@@ -22,21 +23,37 @@
                 $tags[$statement->fetch()['tag_id']] = $tag_label;
             }
 
+            // get img_id for every image that match first tag_id
+            $first_tag_id = array_key_first($tags);
+            $query = 'SELECT `imgID` FROM `imagetags` WHERE `tagID` = :tag_id';
+            $statement = $db->prepare($query);
+            $statement->bindValue(':tag_id', $first_tag_id);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $image_ids = array();
+            foreach ($result as $img) {
+                $image_ids[] = $img['imgID'];
+            }
+
             // get img_id for every image that matches tag_id
             foreach ($tags as $tag_id => $tag_label) {
-                $query = 'SELECT * FROM `imagetags` WHERE `tagID` = :tag_id';
+                $eligible = array();
+                $query = 'SELECT `imgID` FROM `imagetags` WHERE `tagID` = :tag_id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':tag_id', $tag_id);
                 $statement->execute();
                 $result = $statement->fetchAll();
-                foreach ($result as $image) {
-                    $image_ids[] = $image['imgID'];
+                foreach ($result as $img) {
+                    if (array_search($img['imgID'], $image_ids) !== false) {
+                        $eligible[] = $img['imgID'];
+                    }
                 }
+                $image_ids = $eligible;
             }
 
             // populate images array with img_path
             foreach ($image_ids as $img_id) {
-                $query = 'SELECT * FROM `images` WHERE `img_id` = :img_id';
+                $query = 'SELECT `img_path` FROM `images` WHERE `img_id` = :img_id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':img_id', $img_id);
                 $statement->execute();
@@ -44,10 +61,15 @@
             }
             $statement->closeCursor();
 
-            $image_display = '';
+            $image_display = '<h2>Showing images with tag(s): ';
+            foreach ($tags as $tag_id => $tag_label) {
+                $image_display .= $tag_label . ' ';
+            }
+            $image_display .= '<div>';
             foreach ($images as $img_id => $img_path) {
                 $image_display .= '<a href="editor.php?img_id=' . $img_id . '"><img src="img/' . $img_path . '"></a>';
             }
+            $image_display .= '</div>';
         }
         catch (PDOException $e) {
             echo $e->getMessage();
@@ -84,11 +106,22 @@
         <title>Booru</title>
         <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
         <link rel="stylesheet" href="css/style.css">
-        <script src="js/scripts.js"></script>
+        
     </head>
+
     <body>
+    <?php if (isset($_SESSION['user'])) { ?>
         <h2>Click an image to tag it</h2>
-        <?= $image_display ?>
-        <a href="main.php">Back to main</a>
+        <div>
+            <?= $image_display ?>
+        </div>
+        <form method="GET" action="images.php">
+            <label for="search">Search for tags</label>
+            <input type="text" name="search">
+        </form>
+        <div>
+            <a href="main.php">Back to main</a>
+        </div>
+    <?php } else { echo $login_form; } ?>
     </body>
 </html>

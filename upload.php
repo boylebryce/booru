@@ -1,7 +1,8 @@
 <?php
 
-    require('php/keys.php');
-    require('php/utilities.php');
+    require_once('php/keys.php');
+    require_once('php/login.php');
+    require_once('php/utilities.php');
 
     $preview = '';
     $img_path = '';
@@ -52,17 +53,19 @@
         <title>Booru</title>
         <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
         <link rel="stylesheet" href="css/style.css">
-        <script src="js/scripts.js"></script>
+        
     </head>
     <body>
+    <?php if(isset($_SESSION['user'])) { ?>
         <?= $preview ?>
-        <a href="main.php">Back to main</a>
-        <a href="images.php">View uploaded images</a>
         <?php if ($img_id !== '') { ?>
         <form method="POST" action="editor.php">
             <input type="submit" value="Tag this image">
             <input type="text" value="<?= $img_id ?>" name="img_id" style="display:none">
         </form>
         <?php } ?>
+        <a href="main.php">Back to main</a>
+        <a href="images.php">View uploaded images</a>
+    <?php } else { echo $login_form; } ?>
     </body>
 </html>
