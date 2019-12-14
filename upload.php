@@ -73,7 +73,7 @@
         <a href="main.php">Back to main</a>
         <a href="images.php">View uploaded images</a>
         <?php if ($img_id !== '') { ?>
-        <form method="POST" action="tag.php">
+        <form method="POST" action="editor.php">
             <input type="submit" value="Tag this image">
             <input type="text" value="<?= $img_id ?>" name="img_id" style="display:none">
         </form>

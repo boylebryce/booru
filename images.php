@@ -16,7 +16,7 @@
     
     $images = '';
     foreach ($result as $img) {
-        $images .= '<a href="tag.php?img_id=' . $img['img_id'] . '"><img src="img/' . $img['img_path'] . '"></a>';
+        $images .= '<a href="editor.php?img_id=' . $img['img_id'] . '"><img src="img/' . $img['img_path'] . '"></a>';
     }
 
 ?>

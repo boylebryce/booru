@@ -118,7 +118,7 @@
         <ul>
             <?= $current_tags ?>
         </ul>
-        <form method="POST" action="tag.php">
+        <form method="POST" action="editor.php">
             <label>Add space-separated tags here</label>
             <input type="text" name="tags">
             <input type="text" name="img_id" value="<?= $img_id ?>" style="display:none">
