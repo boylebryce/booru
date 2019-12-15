@@ -110,7 +110,7 @@
                 $statement->bindValue(':tag_id', $tag['tagID']);
                 $statement->execute();
                 $label = $statement->fetch();
-                $current_tags .= '<li><input type="checkbox" name="selected_tags[]" value="' . $label['tag_id'] . '">' . $label['tag_label'] . '</li>';
+                $current_tags .= '<a href="images.php?search=' . $label['tag_label'] . '"><li><input type="checkbox" name="selected_tags[]" value="' . $label['tag_id'] . '">' . $label['tag_label'] . '</li></a>';
             }
             $statement->closeCursor();
         }
