@@ -54,7 +54,7 @@
             <input type="text" value="<?= $img_id ?>" name="img_id" style="display:none">
         </form>
         <?php } ?>
-        <a href="main.php">Back to main</a>
+        <a href="index.php">Back to main</a>
         <a href="images.php">View uploaded images</a>
     <?php } else { echo $login_form; } ?>
     </body>

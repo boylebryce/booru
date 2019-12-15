@@ -137,7 +137,7 @@
         <img src="<?= 'img/' . $img_path ?>">
         <form method="POST" action="editor.php">
             <label>Add space-separated tags here</label>
-            <input type="text" name="tags">
+            <input type="text" name="tags" required>
             <input type="text" name="img_id" value="<?= $img_id ?>" style="display:none">
             <input type="text" name="img_path" value="<?= $img_path ?>" style="display:none">
             <input type="submit" value="Submit">

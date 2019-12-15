@@ -20,8 +20,8 @@
             <img id="paste-preview">
         </div>
         <form id="upload-form" method="POST" action="upload.php" enctype="multipart/form-data">
-            <input type="file" name="userfile">
-            <input type="submit" value="Upload File">
+            <input type="file" name="userfile" required>
+            <input id="upload-form-submit" type="submit" value="Upload File" tabindex="1">
         </form>
         <form method="GET" action="images.php">
             <label for="search">Search for tags</label>
