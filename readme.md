@@ -1,8 +1,10 @@
-booru - a tag-based image board.
+*booru* - a tag-based image board.
 
 This is a booru that I'm building from scratch to learn about web development and version control. It currently uses PHP and MySQL with some JavaScript thrown in here and there.
 
-v0.2: Completely reworked how the application uploads images to the server. The previous version allowed the user to paste an image in the web browser. That image was then encoded as a base64 string and passed to the upload script via POST, which converted it to an image and uploaded it. This worked fine locally (XAMPP) but didn't work on my web server, which threw a 403 page whenever POST contained a base64 encoded string. Some googling leads me to believe that my hosting plan uses an Apache configuration that blocks base64 encoded values from being passed in HTTP requests for security reasons.
+**v0.2**: Completely reworked how the application uploads images to the server. 
+
+The previous version allowed the user to paste an image in the web browser. That image was then encoded as a base64 string and passed to the upload script via POST, which converted it to an image and uploaded it. This worked fine locally (XAMPP) but didn't work on my web server, which threw a 403 page whenever POST contained a base64 encoded string. Some googling leads me to believe that my hosting plan uses an Apache configuration that blocks base64 encoded values from being passed in HTTP requests for security reasons.
 
 This led to me reworking the upload script completely. It now accepts both pasted images and file uploads, and uses a proper file input form to submit the image data via POST in a way that works on my web server. Uploading an image file via a file input form works as expected, with the data being passed via POST and accessible in the upload script in the FILES array. This seemed like the easiest way to handle pasted image data as well, so I cobbled together some JavaScript that takes the base64 encoded image data from the paste event, converts it to a file, and inserts that file into the file input form. From there, submitting the form works exactly the same as if the file had been selected from the file input menu, so the upload script doesn't have to differentiate between a image selected from the user's machine or a pasted image.
 
