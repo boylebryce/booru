@@ -56,7 +56,7 @@
                 $tag_id = $statement->fetch()['tag_id'];
 
                 // check that image doesn't already have tag before adding
-                $query = 'SELECT COUNT(1) AS total FROM `imagetags` WHERE `imgID` = :img_id AND `tagID` = :tag_id';
+                $query = 'SELECT COUNT(1) AS total FROM `imagetags` WHERE `img_id` = :img_id AND `tag_id` = :tag_id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':img_id', $_POST['img_id']);
                 $statement->bindValue('tag_id', $tag_id);
@@ -65,7 +65,7 @@
 
                 // img, tag pair doesn't already exists, so add it
                 if ($result['total'] == 0) {
-                    $query = 'INSERT INTO `imagetags` (`ImageTagsID`, `imgID`, `tagID`) VALUES (NULL, :img_id, :tag_id);';
+                    $query = 'INSERT INTO `imagetags` (`imagetags_id`, `img_id`, `tag_id`) VALUES (NULL, :img_id, :tag_id);';
                     $statement = $db->prepare($query);
                     $statement->bindValue(':img_id', $_POST['img_id']);
                     $statement->bindValue(':tag_id', $tag_id);
@@ -85,7 +85,7 @@
         foreach ($_POST['delete_tags'] as $tag) {
             try {
                 $db = new PDO($dsn, $db_user, $db_pw);
-                $query = 'DELETE FROM `imagetags` WHERE `imgID` = :img_id AND `tagID` = :tag_id';
+                $query = 'DELETE FROM `imagetags` WHERE `img_id` = :img_id AND `tag_id` = :tag_id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':img_id', $_POST['img_id']);
                 $statement->bindValue(':tag_id', $tag);
@@ -112,7 +112,7 @@
             $db = new PDO($dsn, $db_user, $db_pw);
 
             // Remove all entries in imagetags table
-            $query = 'DELETE FROM `imagetags` WHERE `imgID` = :img_id';
+            $query = 'DELETE FROM `imagetags` WHERE `img_id` = :img_id';
             $statement = $db->prepare($query);
             $statement->bindValue(':img_id', $img_id);
             $statement->execute();
@@ -156,7 +156,7 @@
             }
 
             // get existing tags
-            $query = 'SELECT * FROM `imagetags` WHERE `imgID` = :img_id';
+            $query = 'SELECT * FROM `imagetags` WHERE `img_id` = :img_id';
             $statement = $db->prepare($query);
             $statement->bindValue(':img_id', $img_id);
             $statement->execute();
@@ -165,7 +165,7 @@
             foreach ($result as $tag) {
                 $query = 'SELECT * FROM `tags` WHERE `tag_id` = :tag_id';
                 $statement = $db->prepare($query);
-                $statement->bindValue(':tag_id', $tag['tagID']);
+                $statement->bindValue(':tag_id', $tag['tag_id']);
                 $statement->execute();
                 $label = $statement->fetch();
                 $current_tags .= '<a href="images.php?search=' . $label['tag_label'] . '"><li><input type="checkbox" name="delete_tags[]" value="' . $label['tag_id'] . '">' . $label['tag_label'] . '</li></a>';
@@ -211,8 +211,8 @@
             <ul>
                 <?= $current_tags ?>
             </ul>
-            <input type="text" name="img_id" value="<?= $img_id ?>" style="display:none">
-            <input type="text" name="img_path" value="<?= $img_path ?>" style="display:none">
+            <input type="hidden" name="img_id" value="<?= $img_id ?>">
+            <input type="hidden" name="img_path" value="<?= $img_path ?>">
             <input type="submit" value="Delete selected tags">
         </form>
         <form id="image-deletion-form" method="POST" action="editor.php">

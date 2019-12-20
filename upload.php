@@ -51,7 +51,7 @@
         <?php if (isset($img_id)) { ?>
         <form method="POST" action="editor.php">
             <input type="submit" value="Tag this image">
-            <input type="text" value="<?= $img_id ?>" name="img_id" style="display:none">
+            <input type="hidden" value="<?= $img_id ?>" name="img_id">
         </form>
         <?php } ?>
         <a href="index.php">Back to main</a>

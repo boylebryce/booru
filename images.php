@@ -25,27 +25,27 @@
 
             // get img_id for every image that match first tag_id
             $first_tag_id = array_key_first($tags);
-            $query = 'SELECT `imgID` FROM `imagetags` WHERE `tagID` = :tag_id';
+            $query = 'SELECT `img_id` FROM `imagetags` WHERE `tag_id` = :tag_id';
             $statement = $db->prepare($query);
             $statement->bindValue(':tag_id', $first_tag_id);
             $statement->execute();
             $result = $statement->fetchAll();
             $image_ids = array();
             foreach ($result as $img) {
-                $image_ids[] = $img['imgID'];
+                $image_ids[] = $img['img_id'];
             }
 
             // get img_id for every image that matches tag_id
             foreach ($tags as $tag_id => $tag_label) {
                 $eligible = array();
-                $query = 'SELECT `imgID` FROM `imagetags` WHERE `tagID` = :tag_id';
+                $query = 'SELECT `img_id` FROM `imagetags` WHERE `tag_id` = :tag_id';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':tag_id', $tag_id);
                 $statement->execute();
                 $result = $statement->fetchAll();
                 foreach ($result as $img) {
-                    if (array_search($img['imgID'], $image_ids) !== false) {
-                        $eligible[] = $img['imgID'];
+                    if (array_search($img['img_id'], $image_ids) !== false) {
+                        $eligible[] = $img['img_id'];
                     }
                 }
                 $image_ids = $eligible;
