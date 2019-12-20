@@ -1,5 +1,5 @@
-#imageActions {
-    display: none;
+* {
+    box-sizing: border-box;
 }
 
 img {

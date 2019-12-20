@@ -106,22 +106,23 @@
         <title>Booru</title>
         <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
         <link rel="stylesheet" href="css/style.css">
-        
+        <link rel="stylesheet" href="css/images.css">
     </head>
 
     <body>
     <?php if (isset($_SESSION['user'])) { ?>
-        <h2>Click an image to tag it</h2>
-        <div>
-            <?= $image_display ?>
-        </div>
-        <form method="GET" action="images.php">
-            <label for="search">Search for tags</label>
-            <input type="text" name="search">
-        </form>
-        <div>
-            <a href="index.php">Back to main</a>
-        </div>
+        <header>
+            <a id="upload-link" href="index.php">Upload</a>
+            <form id="search-form" method="GET" action="images.php">
+                <input id="search-form-input" type="text" name="search">
+            </form>
+        </header>
+        <main>
+            <h2>Click an image to tag it</h2>
+            <div>
+                <?= $image_display ?>
+            </div>
+        </main>
     <?php } else { echo $login_form; } ?>
     </body>
 </html>
