@@ -102,6 +102,7 @@
 <!doctype html>
 <html lang="en">
     <?php if(isset($head_html)) echo $head_html; ?>
+    </head>
     <body>
         <?php if (isset($nav_html)) echo $nav_html; ?>
         <main>

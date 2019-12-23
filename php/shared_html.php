@@ -10,7 +10,6 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/index.css">
         <script src="js/scripts.js"></script>
-    </head>
     ';
 
     $nav_html = 

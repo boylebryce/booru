@@ -36,6 +36,7 @@
 <!doctype html>
 <html lang="en">
     <?php if(isset($head_html)) echo $head_html; ?>
+    </head>
     <body>
         <div id="login-form">
             <h2>booru v0.2</h2>
