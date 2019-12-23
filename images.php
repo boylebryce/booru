@@ -1,7 +1,8 @@
 <?php
 
     require_once('php/keys.php');
-    require_once('php/login.php');
+    require_once('php/session.php');
+    require_once('php/shared_html.php');
 
     // display images with tags in search
     if (isset($_GET['search'])) {
@@ -110,19 +111,12 @@
     </head>
 
     <body>
-    <?php if (isset($_SESSION['user'])) { ?>
-        <header>
-            <a id="upload-link" href="index.php">Upload</a>
-            <form id="search-form" method="GET" action="images.php">
-                <input id="search-form-input" type="text" name="search">
-            </form>
-        </header>
+        <?php if (isset($nav_html)) echo $nav_html; ?>
         <main>
             <h2>Click an image to tag it</h2>
             <div>
                 <?= $image_display ?>
             </div>
         </main>
-    <?php } else { echo $login_form; } ?>
     </body>
 </html>

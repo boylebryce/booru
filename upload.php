@@ -1,8 +1,9 @@
 <?php
 
     require_once('php/keys.php');
-    require_once('php/login.php');
+    require_once('php/session.php');
     require_once('php/functions.php');
+    require_once('php/shared_html.php');
 
     if (isset($_FILES['userfile'])) {
         $uploaddir = 'img/';
@@ -46,16 +47,13 @@
         
     </head>
     <body>
-    <?php if(isset($_SESSION['user'])) { ?>
-        <?= isset($preview) ? $preview : '' ?>
+        <?php if (isset($nav_html)) echo $nav_html; ?>
+        <?php if (isset($preview)) echo $preview; ?>
         <?php if (isset($img_id)) { ?>
-        <form method="POST" action="editor.php">
-            <input type="submit" value="Tag this image">
-            <input type="hidden" value="<?= $img_id ?>" name="img_id">
-        </form>
+            <form method="POST" action="editor.php">
+                <input type="submit" value="Tag this image">
+                <input type="hidden" value="<?= $img_id ?>" name="img_id">
+            </form>
         <?php } ?>
-        <a href="index.php">Back to main</a>
-        <a href="images.php">View uploaded images</a>
-    <?php } else { echo $login_form; } ?>
     </body>
 </html>

@@ -1,8 +1,9 @@
 <?php
 
     require_once('php/keys.php');
-    require_once('php/login.php');
+    require_once('php/session.php');
     require_once('php/functions.php');
+    require_once('php/shared_html.php');
 
     $current_tags = '';
 
@@ -190,39 +191,39 @@
         
     </head>
     <body>
-    <?php if (isset($_SESSION['user'])) { ?>
+        <?php if (isset($nav_html)) echo $nav_html; ?>
+
         <!-- Show image, tags, and editor -->
         <?php if (isset($img_id)) { ?>
-        <?php if (isset($deletion_result)) {echo '<p>' . $deletion_result . '</p>';} ?>
-        <img src="<?= 'img/' . $img_path ?>">
-        <form id="add-tags-form" method="POST" action="editor.php">
-            <label>Add space-separated tags here</label>
-            <input type="text" name="add_tags" required>
-            <input type="hidden" name="img_id" value="<?= $img_id ?>">
-            <input type="hidden" name="img_path" value="<?= $img_path ?>">
-            <input type="submit" value="Submit" name="add_tags_form">
-        </form>
-        <div>
-            <a href="index.php">Back to main</a>
-            <a href="images.php">View uploaded images</a>
-        </div>
-        <h2>Current tags:</h2>
-        <form id="tag-deletion-form" method="POST" action="editor.php">
-            <ul>
-                <?= $current_tags ?>
-            </ul>
-            <input type="hidden" name="img_id" value="<?= $img_id ?>">
-            <input type="hidden" name="img_path" value="<?= $img_path ?>">
-            <input type="submit" value="Delete selected tags">
-        </form>
-        <form id="image-deletion-form" method="POST" action="editor.php">
-            <input type="submit" value="Delete image" name="delete_image">
-            <input type="hidden" name="img_id" value="<?= $img_id ?>">
-        </form>
-        <!-- No image argument, show navigation -->
+            <?php if (isset($deletion_result)) {echo '<p>' . $deletion_result . '</p>';} ?>
+            <img src="<?= 'img/' . $img_path ?>">
+            <form id="add-tags-form" method="POST" action="editor.php">
+                <label>Add space-separated tags here</label>
+                <input type="text" name="add_tags" required>
+                <input type="hidden" name="img_id" value="<?= $img_id ?>">
+                <input type="hidden" name="img_path" value="<?= $img_path ?>">
+                <input type="submit" value="Submit" name="add_tags_form">
+            </form>
+            <div>
+                <a href="index.php">Back to main</a>
+                <a href="images.php">View uploaded images</a>
+            </div>
+            <h2>Current tags:</h2>
+            <form id="tag-deletion-form" method="POST" action="editor.php">
+                <ul>
+                    <?= $current_tags ?>
+                </ul>
+                <input type="hidden" name="img_id" value="<?= $img_id ?>">
+                <input type="hidden" name="img_path" value="<?= $img_path ?>">
+                <input type="submit" value="Delete selected tags">
+            </form>
+            <form id="image-deletion-form" method="POST" action="editor.php">
+                <input type="submit" value="Delete image" name="delete_image">
+                <input type="hidden" name="img_id" value="<?= $img_id ?>">
+            </form>
+        <!-- No image argument -->
         <?php } else { ?>
             
         <?php } ?>
-    <?php } else { echo $login_form; } ?>
     </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 
-    require_once('php/login.php');
+    require_once('php/session.php');
+    require_once('php/shared_html.php');
 
 ?>
 
@@ -16,8 +17,8 @@
         <script src="js/scripts.js"></script>
     </head>
     <body>
-    <?php if (isset($_SESSION['user'])) { ?>
-        <div id="main-content-area">
+        <?php if(isset($nav_html)) echo $nav_html; ?>
+        <main>
             <div id="paste-preview-area" style="display:none">
                 <img id="paste-preview">
             </div>
@@ -25,12 +26,6 @@
                 <input type="file" name="userfile" required>
                 <input id="upload-form-submit" type="submit" value="Upload File" tabindex="1">
             </form>
-            <form method="GET" action="images.php">
-                <label for="search">Search for tags</label>
-                <input type="text" name="search">
-            </form>
-            <a href="images.php">View uploaded images</a>
-        </div>
-    <?php } else { echo $login_form; } ?>
+        </main>
     </body>
 </html>
