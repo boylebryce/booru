@@ -8,11 +8,6 @@
         session_start();
     }
 
-    if (isset($_SESSION['user'])) {
-        header('Location: /booru/index.php');
-        exit();
-    }
-
     require_once('php/keys.php');
 
     $login_error = '';
@@ -30,6 +25,11 @@
         else {
             $login_error = '<p>Login error</p>';
         }
+    }
+
+    if (isset($_SESSION['user'])) {
+        header('Location: /booru/index.php');
+        exit();
     }
 ?>
 
