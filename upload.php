@@ -11,13 +11,7 @@
         $filename = random_filename(16, $uploaddir, $uploadext);
         $uploadfile = $uploaddir . $filename;
         
-
-        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-            dbprint('Successfully uploaded ' . $uploadfile);
-        }
-        else {
-            dbprint('Failed to upload ' . $uploadfile);
-        }
+        move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile);
 
         try {
             $db = new PDO($dsn, $db_user, $db_pw);
