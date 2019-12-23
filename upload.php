@@ -39,12 +39,14 @@
     </head>
     <body>
         <?php if (isset($nav_html)) echo $nav_html; ?>
-        <?php if (isset($preview)) echo $preview; ?>
-        <?php if (isset($img_id)) { ?>
-            <form method="POST" action="editor.php">
-                <input type="submit" value="Tag this image">
-                <input type="hidden" value="<?= $img_id ?>" name="img_id">
-            </form>
-        <?php } ?>
+        <main>
+            <?php if (isset($preview)) echo $preview; ?>
+            <?php if (isset($img_id)) { ?>
+                <form method="POST" action="editor.php">
+                    <input type="submit" value="Tag this image">
+                    <input type="hidden" value="<?= $img_id ?>" name="img_id">
+                </form>
+            <?php } ?>
+        </main>
     </body>
 </html>
