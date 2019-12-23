@@ -11,21 +11,24 @@
         $filename = random_filename(16, $uploaddir, $uploadext);
         $uploadfile = $uploaddir . $filename;
         
-        move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile);
+        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+            try {
+                $db = new PDO($dsn, $db_user, $db_pw);
+                $query = 'INSERT INTO `images` (`img_id`, `img_path`, `img_tagcount`) VALUES (NULL, :img_path, 0);';
+                $statement = $db->prepare($query);
+                $statement->bindValue(':img_path', $filename);
+                $result = $statement->execute();
+                $img_id = $db->lastInsertId();
+                $statement->closeCursor();
 
-        try {
-            $db = new PDO($dsn, $db_user, $db_pw);
-            $query = 'INSERT INTO `images` (`img_id`, `img_path`, `img_tagcount`) VALUES (NULL, :img_path, 0);';
-            $statement = $db->prepare($query);
-            $statement->bindValue(':img_path', $filename);
-            $result = $statement->execute();
-            $img_id = $db->lastInsertId();
-            $statement->closeCursor();
+                // send newly uploaded image to editor
+                header('Location: /booru/editor.php?img_id=' . $img_id);
+                exit();
+            }
+            catch (PDOException $e) {
+                echo $e->getMessage();
+            }
         }
-        catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-        $preview = '<img src="' . $uploadfile . '">';
     }
 
 ?>
