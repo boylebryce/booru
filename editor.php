@@ -14,6 +14,7 @@
 
         Low priority:
         * Consider changing all POST[img_id] to GET[img_id] by altering form action url?
+        * How to handle no image argument - redirect to index or images?
     */
 
     /* Script Control flow:
@@ -182,14 +183,7 @@
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Booru</title>
-        <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
-        <link rel="stylesheet" href="css/style.css">
-        
-    </head>
+    <?php if(isset($head_html)) echo $head_html; ?>
     <body>
         <?php if (isset($nav_html)) echo $nav_html; ?>
 
@@ -223,7 +217,7 @@
             </form>
         <!-- No image argument -->
         <?php } else { ?>
-            
+
         <?php } ?>
     </body>
 </html>

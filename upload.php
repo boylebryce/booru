@@ -38,17 +38,9 @@
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <title>Booru</title>
-        <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
-        <link rel="stylesheet" href="css/style.css">
-        
-    </head>
+    <?php if(isset($head_html)) echo $head_html; ?>
     <body>
         <?php if (isset($nav_html)) echo $nav_html; ?>
-        
         <?php if (isset($preview)) echo $preview; ?>
         <?php if (isset($img_id)) { ?>
             <form method="POST" action="editor.php">

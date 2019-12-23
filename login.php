@@ -9,7 +9,7 @@
     }
 
     if (isset($_SESSION['user'])) {
-        header('Location: index.php');
+        header('Location: /booru/index.php');
         exit();
     }
 
@@ -35,18 +35,10 @@
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Booru</title>
-        <meta name="description" content="A booru (tag-based image board) made from scratch by someone who doesn't know what they're doing. Expect things to either be only partially implemented or outright broken.">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/index.css">
-        <script src="js/scripts.js"></script>
-    </head>
+    <?php if(isset($head_html)) echo $head_html; ?>
     <body>
         <div id="login-form">
-            <h2>One Piece Booru v0.2</h2>
+            <h2>booru v0.2</h2>
             <form method="POST" action="login.php">
                 <table>
                 <tr>
