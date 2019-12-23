@@ -2,18 +2,18 @@
 
     session_start();
 
+    if(isset($_POST['logout'])) {
+        session_unset();
+        session_destroy();
+        session_start();
+    }
+
     if (isset($_SESSION['user'])) {
         header('Location: index.php');
         exit();
     }
 
     require_once('php/keys.php');
-
-    if(isset($_POST['logout'])) {
-        session_unset();
-        session_destroy();
-        session_start();
-    }
 
     $login_error = '';
     if (isset($_POST['username']) && isset($_POST['password'])) {

@@ -18,6 +18,7 @@
     </head>
     <body>
         <?php if(isset($nav_html)) echo $nav_html; ?>
+        
         <main>
             <div id="paste-preview-area" style="display:none">
                 <img id="paste-preview">

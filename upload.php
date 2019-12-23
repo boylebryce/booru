@@ -48,6 +48,7 @@
     </head>
     <body>
         <?php if (isset($nav_html)) echo $nav_html; ?>
+        
         <?php if (isset($preview)) echo $preview; ?>
         <?php if (isset($img_id)) { ?>
             <form method="POST" action="editor.php">

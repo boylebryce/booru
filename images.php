@@ -112,6 +112,7 @@
 
     <body>
         <?php if (isset($nav_html)) echo $nav_html; ?>
+        
         <main>
             <h2>Click an image to tag it</h2>
             <div>
