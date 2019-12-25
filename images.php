@@ -10,14 +10,45 @@
             $db = new PDO($dsn, $db_user, $db_pw);
 
             // separate tags by space-delimiter
-            $search_tags = explode(' ', $_GET['search']);
+            $raw_tags = explode(' ', $_GET['search']);
+            $search_tags = array();
+            $quote_tag = '';
+
+            foreach ($raw_tags as $raw_tag) {
+                if ($raw_tag !== '') {
+                    if ($quote_tag === '') {
+                        // raw_tag is the start of a quote-enclosed tag
+                        if ($raw_tag[0] === '"') {
+                            $quote_tag .= $raw_tag;
+                        }
+                        // raw_tag is a standard tag
+                        else {
+                            $search_tags[] = $raw_tag;
+                        }
+                    }
+                    // raw_tag is part of a quote-enclosed tag
+                    else {
+                        $quote_tag .= ' ' . $raw_tag;
+
+                        // raw_tag is closing the quote-enclosed tag
+                        if (substr($raw_tag, -1) === '"') {
+                            $quote_tag = trim($quote_tag, '"');
+                            $search_tags[] = $quote_tag;
+                            $quote_tag = '';
+                        }
+                    }
+                }
+            }
+
             $tags = array(); // tag_id => tag_label
             $images = array(); // img_id => img_path
             $image_ids = array();
+            
+            // 
 
             // get tag_id for each tag
             foreach ($search_tags as $tag_label) {
-                $query = 'SELECT * FROM `tags` WHERE `tag_label` = :tag_label';
+                $query = 'SELECT `tag_id` FROM `tags` WHERE `tag_label` = :tag_label';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':tag_label', $tag_label);
                 $statement->execute();
@@ -31,7 +62,7 @@
             $statement->bindValue(':tag_id', $first_tag_id);
             $statement->execute();
             $result = $statement->fetchAll();
-            $image_ids = array();
+
             foreach ($result as $img) {
                 $image_ids[] = $img['img_id'];
             }

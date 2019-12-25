@@ -49,14 +49,50 @@
             try {
                 $db = new PDO($dsn, $db_user, $db_pw);
 
-                // tags are passed as a space-separated string of individual tags
-                $tags = explode(' ', $_POST['add_tags']);
+                /*  
+                    tags are passed as a space-separated string of individual tags
+                    tags can contain spaces if they are enclosed in "double quotes"
+                */
+
+                $raw_tags = explode(' ', $_POST['add_tags']);
+                $tags = array();
+                $quote_tag = '';
+
+                foreach ($raw_tags as $raw_tag) {
+                    if ($raw_tag !== '') {
+                        if ($quote_tag === '') {
+                            // raw_tag is the start of a quote-enclosed tag
+                            if ($raw_tag[0] === '"') {
+                                $quote_tag .= $raw_tag;
+                            }
+                            // raw_tag is a standard tag
+                            else {
+                                $tags[] = $raw_tag;
+                            }
+                        }
+                        // raw_tag is part of a quote-enclosed tag
+                        else {
+                            $quote_tag .= ' ' . $raw_tag;
+
+                            // raw_tag is closing the quote-enclosed tag
+                            if (substr($raw_tag, -1) === '"') {
+                                $quote_tag = trim($quote_tag, '"');
+                                $tags[] = $quote_tag;
+                                $quote_tag = '';
+                            }
+                        }
+                    }
+                }
+
+                if ($quote_tag !== '') {
+                    $tag_error = 'Tagging error: no closing quote for ' . $quote_tag;
+                }
 
                 // check if any tags are new to tag system and add to tags table
                 foreach ($tags as $tag_label) {
                     $query = 'SELECT COUNT(*) FROM `tags` WHERE `tag_label` = :tag';
                     $statement = $db->prepare($query);
-                    $statement->bindValue(':tag', $tag);
+                    $statement->bindValue(':tag', $tag_label);
                     $statement->execute();
 
                     // tag doesn't exist in tags table, add it
@@ -68,7 +104,7 @@
                     }
                 }
 
-                // add img_id, tag_id pairs to imagetags table
+                // add img_id and tag_id to imagetags table
                 foreach ($tags as $tag_label) {
                     // get tag_id
                     $query = 'SELECT `tag_id` FROM `tags` WHERE `tag_label` = :tag_label';
@@ -78,15 +114,14 @@
                     $tag_id = $statement->fetch()['tag_id'];
 
                     // check that image doesn't already have tag before adding
-                    $query = 'SELECT COUNT(1) AS total FROM `imagetags` WHERE `img_id` = :img_id AND `tag_id` = :tag_id';
+                    $query = 'SELECT COUNT(*) FROM `imagetags` WHERE `img_id` = :img_id AND `tag_id` = :tag_id';
                     $statement = $db->prepare($query);
                     $statement->bindValue(':img_id', $img_id);
                     $statement->bindValue('tag_id', $tag_id);
                     $statement->execute();
-                    $result = $statement->fetch();
 
                     // img, tag pair doesn't already exists, so add it
-                    if ($result['total'] == 0) {
+                    if ($statement->fetchColumn() == 0) {
                         $query = 'INSERT INTO `imagetags` (`imagetags_id`, `img_id`, `tag_id`) VALUES (NULL, :img_id, :tag_id);';
                         $statement = $db->prepare($query);
                         $statement->bindValue(':img_id', $img_id);
@@ -178,7 +213,15 @@
                     $statement->bindValue(':tag_id', $tag['tag_id']);
                     $statement->execute();
                     $label = $statement->fetch();
-                    $current_tags .= '<a href="images.php?search=' . $label['tag_label'] . '"><li><input type="checkbox" name="delete_tags[]" value="' . $label['tag_id'] . '">' . $label['tag_label'] . '</li></a>';
+
+                    // add quotes to multiword tags
+                    if (strstr($label['tag_label'], ' ')) {
+                        $multiword_label = '&quot;' . $label['tag_label'] . '&quot;';
+                    }
+
+                    $current_tags .= '<a href="images.php?search=';
+                    $current_tags .= isset($multiword_label) ? $multiword_label : $label['tag_label'];
+                    $current_tags .= '"><li><input type="checkbox" name="delete_tags[]" value="' . $label['tag_id'] . '">' . $label['tag_label'] . '</li></a>';
                 }
                 $statement->closeCursor();
             }
@@ -203,6 +246,7 @@
                 <!-- Show image, tags, and editor -->
                 <?php if (isset($img_id)) { ?>
                     <img src="<?= 'img/' . $img_path ?>">
+                    <?php if (isset($tag_error)) echo '<p>' . $tag_error . '</p>'; ?>
                     <form id="add-tags-form" method="POST" action="editor.php">
                         <label>Add space-separated tags here</label>
                         <input type="text" name="add_tags" required>
@@ -210,10 +254,7 @@
                         <input type="hidden" name="img_path" value="<?= $img_path ?>">
                         <input type="submit" value="Submit" name="add_tags_form">
                     </form>
-                    <div>
-                        <a href="index.php">Back to main</a>
-                        <a href="images.php">View uploaded images</a>
-                    </div>
+
                     <h2>Current tags:</h2>
                     <form id="tag-deletion-form" method="POST" action="editor.php">
                         <ul>
@@ -223,6 +264,7 @@
                         <input type="hidden" name="img_path" value="<?= $img_path ?>">
                         <input type="submit" value="Delete selected tags">
                     </form>
+
                     <form id="image-deletion-form" method="POST" action="editor.php">
                         <input type="submit" value="Delete image" name="delete_image">
                         <input type="hidden" name="img_id" value="<?= $img_id ?>">
