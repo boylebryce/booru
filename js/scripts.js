@@ -19,11 +19,14 @@ function changeDisplay(selector, displayType) {
 }
 
 function init() {
-    let upload_input = document.querySelector('#upload-input');
+    const upload_input = document.querySelector('#upload-input');
 
     upload_input.addEventListener('change', function() {
         if (this.files && this.files[0]) {
             changeDisplay('#upload-submit', 'inline-block');
+            changeDisplay('#paste-instructions', 'none');
+            document.querySelector('#file-name').textContent = this.files[0].name;
+            console.log(this.files);
         }
     });
 
@@ -53,9 +56,11 @@ function init() {
                 // insert FileList into upload form
                 upload_input.files = my_data.files;
                 changeDisplay('#upload-submit', 'inline-block');
+                document.querySelector('#file-name').textContent = upload_input.files[0].name;
             }
             reader.readAsDataURL(b64png);
             changeDisplay('#paste-preview-area', 'block');
+            changeDisplay('#paste-instructions', 'none');
         }
     });
 }

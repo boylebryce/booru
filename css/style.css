@@ -45,6 +45,7 @@ nav {
 
 .button:hover {
     box-shadow: 2px 2px black;
+    cursor: pointer;
 }
 
 #search-form {
@@ -64,10 +65,6 @@ nav {
 #logout-form {
     display: flex;
     justify-content: flex-end;
-}
-
-#logout-form-submit:hover {
-    cursor: pointer;
 }
 
 main {

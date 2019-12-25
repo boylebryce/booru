@@ -17,6 +17,8 @@
             <div id="paste-preview-area" style="display:none">
                 <img id="paste-preview">
             </div>
+            <h2 id="paste-instructions">Paste an image in the browser or choose an image from your system</h2>
+            <p id="file-name"></p>
             <form id="upload-form" method="POST" action="upload.php" enctype="multipart/form-data">
                 <label id="upload-button" class="button" for="upload-input">Choose a file</label>
                 <input id="upload-input" type="file" name="userfile" required>
