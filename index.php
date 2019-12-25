@@ -9,6 +9,7 @@
 <html lang="en">
     <?php if(isset($head_html)) echo $head_html; ?>
         <link rel="stylesheet" href="css/index.css">
+        <script src="js/index.js"></script>
     </head>
     <body>
         <?php if(isset($nav_html)) echo $nav_html; ?>
