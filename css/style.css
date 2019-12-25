@@ -32,16 +32,18 @@ nav {
     justify-content: left;
 }
 
-#nav-links a {
-    border: 1px solid black;
+.button {
+    border: 1px solid gray;
     border-radius: 5px;
     margin: 5px;
     padding: 5px;
     font-size: 13px;
     text-decoration: none;
+    background-color: transparent;
+    height: 26px;
 }
 
-.nav-button:hover {
+.button:hover {
     box-shadow: 2px 2px black;
 }
 
@@ -52,20 +54,16 @@ nav {
 
 #search-form-input {
     width: 90%;
-    height: 90%;
-    margin: 2px;
+    height: 26px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding: 0 5px 0 5px;
 }
 
 #logout-form {
     display: flex;
     justify-content: flex-end;
-}
-
-#logout-form-submit {
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: transparent;
-    margin: 5px;
 }
 
 #logout-form-submit:hover {

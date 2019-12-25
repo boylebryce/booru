@@ -14,7 +14,19 @@ function dataURLtoFile(dataurl, filename) {
     return new File([u8arr], filename, {type:mime});
 }
 
+function changeDisplay(selector, displayType) {
+    document.querySelector(selector).style.display = displayType;
+}
+
 function init() {
+    let upload_input = document.querySelector('#upload-input');
+
+    upload_input.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            changeDisplay('#upload-submit', 'inline-block');
+        }
+    });
+
     window.addEventListener('paste', event => {
         let items = (event.clipboardData || event.originalEvent.clipboardData).items;
         let b64png = null;
@@ -34,15 +46,16 @@ function init() {
                 document.getElementById("paste-preview").src = event.target.result;
 
                 // use DataTransfer object to wrap image file in FileList object
-                let image_file = dataURLtoFile(event.target.result, 'upload.png');
+                const image_file = dataURLtoFile(event.target.result, 'upload.png');
                 let my_data = new DataTransfer();
                 my_data.items.add(image_file);
 
                 // insert FileList into upload form
-                document.querySelector('input[type=file]').files = my_data.files;
+                upload_input.files = my_data.files;
+                changeDisplay('#upload-submit', 'inline-block');
             }
             reader.readAsDataURL(b64png);
-            document.querySelector('#paste-preview-area').style.display = "block";
+            changeDisplay('#paste-preview-area', 'block');
         }
     });
 }
