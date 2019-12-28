@@ -218,9 +218,12 @@
                     if (strstr($label['tag_label'], ' ')) {
                         $multiword_label = '&quot;' . $label['tag_label'] . '&quot;';
                     }
+                    else {
+                        $multiword_label = '';
+                    }
 
                     $current_tags .= '<a href="images.php?search=';
-                    $current_tags .= isset($multiword_label) ? $multiword_label : $label['tag_label'];
+                    $current_tags .= $multiword_label !== '' ? $multiword_label : $label['tag_label'];
                     $current_tags .= '"><li><input type="checkbox" name="delete_tags[]" value="' . $label['tag_id'] . '">' . $label['tag_label'] . '</li></a>';
                 }
                 $statement->closeCursor();
