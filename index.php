@@ -1,7 +1,8 @@
 <?php
 
-    require_once('php/session.php');
-    require_once('php/shared_html.php');
+    require_once 'paths.php';
+    require_once PHP_DIR . '/session.php';
+    require_once PHP_DIR . '/shared_html.php';
 
 ?>
 
@@ -13,7 +14,6 @@
     </head>
     <body>
         <?php if(isset($nav_html)) echo $nav_html; ?>
-
         <main>
             <div id="paste-preview-area" style="display:none">
                 <img id="paste-preview">
