@@ -1,5 +1,8 @@
 <?php
 
+    require_once 'php/paths.php';
+    require_once CONFIG_FILE;
+
     session_start();
 
     if(isset($_POST['logout'])) {
@@ -7,8 +10,6 @@
         session_destroy();
         session_start();
     }
-
-    require_once('php/keys.php');
 
     $login_error = '';
     if (isset($_POST['username']) && isset($_POST['password'])) {

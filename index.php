@@ -1,8 +1,9 @@
 <?php
 
     require_once 'paths.php';
-    require_once PHP_DIR . '/session.php';
-    require_once PHP_DIR . '/shared_html.php';
+    require_once CONFIG_FILE;
+    require_once 'php/session.php';
+    require_once 'php/shared_html.php';
 
 ?>
 

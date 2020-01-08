@@ -1,9 +1,10 @@
 <?php
 
-    require_once('php/keys.php');
-    require_once('php/session.php');
-    require_once('php/functions.php');
-    require_once('php/shared_html.php');
+    require_once 'php/paths.php';
+    require_once CONFIG_FILE;
+    require_once 'php/session.php';
+    require_once 'php/functions.php';
+    require_once 'php/shared_html.php';
 
     if (isset($_FILES['userfile'])) {
         $uploaddir = 'img/';
