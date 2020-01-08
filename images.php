@@ -8,7 +8,7 @@
     // display images with tags in search
     if (isset($_GET['search'])) {
         try {
-            $db = new PDO($dsn, $db_user, $db_pw);
+            $db = new PDO(DSN, DB_USER, DB_PW);
 
             // separate tags by space-delimiter
             $raw_tags = explode(' ', $_GET['search']);
@@ -112,7 +112,7 @@
     // display all images
     else {
         try {
-            $db = new PDO($dsn, $db_user, $db_pw);
+            $db = new PDO(DSN, DB_USER, DB_PW);
             $query = 'SELECT * FROM `images`';
             $statement = $db->prepare($query);
             $statement->execute();

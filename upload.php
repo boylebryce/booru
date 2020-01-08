@@ -14,7 +14,7 @@
         
         if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
             try {
-                $db = new PDO($dsn, $db_user, $db_pw);
+                $db = new PDO(DSN, DB_USER, DB_PW);
                 $query = 'INSERT INTO `images` (`img_id`, `img_path`, `img_tagcount`) VALUES (NULL, :img_path, 0);';
                 $statement = $db->prepare($query);
                 $statement->bindValue(':img_path', $filename);

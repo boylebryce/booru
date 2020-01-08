@@ -13,7 +13,7 @@
 
     $login_error = '';
     if (isset($_POST['username']) && isset($_POST['password'])) {
-        $db = new PDO($dsn, $db_user, $db_pw);
+        $db = new PDO(DSN, DB_USER, DB_PW);
         $query = 'SELECT COUNT(1) AS total FROM `users` WHERE `username` = :username AND `password` = :password';
         $statement = $db->prepare($query);
         $statement->bindValue(':username', $_POST['username']);

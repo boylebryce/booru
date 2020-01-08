@@ -27,7 +27,7 @@
     // img_id must be set to do anything in the editor
     if(isset($_POST['img_id']) || isset($_GET['img_id'])) {
         $img_id = isset($_POST['img_id']) ? $_POST['img_id'] : $_GET['img_id'];
-        $db = new PDO($dsn, $db_user, $db_pw);
+        $db = new PDO(DSN, DB_USER, DB_PW);
 
         // validate img_id - must exist in images table
         try {
@@ -48,7 +48,7 @@
         // add tags to image
         if (isset($_POST['add_tags']) && $db_error === '') {
             try {
-                $db = new PDO($dsn, $db_user, $db_pw);
+                $db = new PDO(DSN, DB_USER, DB_PW);
 
                 /*  
                     tags are passed as a space-separated string of individual tags
@@ -141,7 +141,7 @@
         if (isset($_POST['delete_tags']) && $db_error === '') {
             foreach ($_POST['delete_tags'] as $tag_id) {
                 try {
-                    $db = new PDO($dsn, $db_user, $db_pw);
+                    $db = new PDO(DSN, DB_USER, DB_PW);
                     $query = 'DELETE FROM `imagetags` WHERE `img_id` = :img_id AND `tag_id` = :tag_id';
                     $statement = $db->prepare($query);
                     $statement->bindValue(':img_id', $img_id);
@@ -157,7 +157,7 @@
         // delete image
         if (isset($_POST['delete_image']) && $db_error === '') {
             try {
-                $db = new PDO($dsn, $db_user, $db_pw);
+                $db = new PDO(DSN, DB_USER, DB_PW);
 
                 // Remove all entries in imagetags table
                 $query = 'DELETE FROM `imagetags` WHERE `img_id` = :img_id';
@@ -190,7 +190,7 @@
             $img_id = isset($_POST['img_id']) ? $_POST['img_id'] : $_GET['img_id'];
             $img_path = isset($_POST['img_path']) ? $_POST['img_path'] : '';
             try {
-                $db = new PDO($dsn, $db_user, $db_pw);
+                $db = new PDO(DSN, DB_USER, DB_PW);
 
                 // get img_path if not already set
                 if ($img_path === '') {
