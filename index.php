@@ -1,6 +1,6 @@
 <?php
 
-    require_once 'paths.php';
+    require_once 'php/paths.php';
     require_once CONFIG_FILE;
     require_once 'php/session.php';
     require_once 'php/shared_html.php';
