@@ -16,7 +16,7 @@ function init() {
 
     searchForm.addEventListener('submit', event => {
         event.preventDefault();
-        window.location.assign(WEBROOT + '/booru/test/images.php?search=' + searchFormInput.value)
+        window.location.assign(WEBROOT + '/booru/images.php?search=' + searchFormInput.value)
     })
 }
 
