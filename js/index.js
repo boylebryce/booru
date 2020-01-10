@@ -1,5 +1,92 @@
 window.onload = init;
 
+const protocol = document.location.protocol;
+const hostname = document.location.hostname;
+const webroot = protocol + '//' + hostname;
+
+// TODO: change this to get valid extensions from API
+const validExtensions = ['png', 'jpg', 'jpeg'];
+
+function init() {
+    const uploadForm = document.querySelector('#upload-form');
+    const uploadInput = document.querySelector('#upload-input');
+    const fileNameDisplay = document.querySelector('#file-name');
+    const imagePreview = document.querySelector('#paste-preview');
+
+    uploadInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            changeDisplay('#upload-submit', 'inline-block');
+            changeDisplay('#paste-instructions', 'none');
+            fileNameDisplay.textContent = this.files[0].name;
+        }
+    });
+
+    uploadForm.addEventListener('submit', event => {
+        event.preventDefault();
+        if (uploadInput.files && uploadInput.files[0]) {
+            const file = uploadInput.files[0];
+            const formData = new FormData();
+            formData.append('userfile', file);
+
+            fetch(webroot + '/booru-api/upload.php', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                return response.json();
+            }).then(response => {
+                if (response['error']) {
+                    const node = document.createElement('p');
+                    node.textContent = imageData['error'];
+                    uploadForm.append(node);
+                }
+                else {
+                    const editorRedirect = webroot + '/booru/editor.php?img_id=' + response['img_id'];
+                    window.location.href = editorRedirect;
+                }
+            });
+        }
+    })
+
+    window.addEventListener('paste', event => {
+        let items = (event.clipboardData || event.originalEvent.clipboardData).items;
+        let image = null;
+        let extension = null;
+
+        // get image from clipboard
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') === 0) {
+                image = items[i].getAsFile();
+                extension = items[i].type.split('/')[1];
+            }
+        }
+
+        // TODO: display errors to user (no image or invalid extension)
+        if (image !== null) {
+            // get image as data URL for preview
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.src = event.target.result;
+
+                // wrap image in FileList object to insert into uploadInput
+                const imageFile = dataURLtoFile(event.target.result, 'upload.' + extension);
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(imageFile);
+
+                uploadInput.files = dataTransfer.files;
+                changeDisplay('#upload-submit', 'inline-block');
+                fileNameDisplay.textContent = uploadInput.files[0].name;
+            }
+            reader.readAsDataURL(image);
+            changeDisplay('#paste-preview-area', 'block');
+            changeDisplay('#paste-instructions', 'none');
+        }
+    });
+}
+
+function changeDisplay(selector, displayType) {
+    document.querySelector(selector).style.display = displayType;
+}
+
 function dataURLtoFile(dataurl, filename) {
     let arr = dataurl.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
@@ -12,55 +99,4 @@ function dataURLtoFile(dataurl, filename) {
     }
 
     return new File([u8arr], filename, {type:mime});
-}
-
-function changeDisplay(selector, displayType) {
-    document.querySelector(selector).style.display = displayType;
-}
-
-function init() {
-    const upload_input = document.querySelector('#upload-input');
-
-    upload_input.addEventListener('change', function() {
-        if (this.files && this.files[0]) {
-            changeDisplay('#upload-submit', 'inline-block');
-            changeDisplay('#paste-instructions', 'none');
-            document.querySelector('#file-name').textContent = this.files[0].name;
-            console.log(this.files);
-        }
-    });
-
-    window.addEventListener('paste', event => {
-        let items = (event.clipboardData || event.originalEvent.clipboardData).items;
-        let b64png = null;
-
-        // check all items on clipboard for images and store image in b64png
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf('image') === 0) {
-                // image from paste event will be a base64 encoded string
-                b64png = items[i].getAsFile();
-            }
-        }
-
-        // if image found on clipboard, convert to dataURL to display on page
-        if (b64png !== null) {
-            let reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById("paste-preview").src = event.target.result;
-
-                // use DataTransfer object to wrap image file in FileList object
-                const image_file = dataURLtoFile(event.target.result, 'upload.png');
-                let my_data = new DataTransfer();
-                my_data.items.add(image_file);
-
-                // insert FileList into upload form
-                upload_input.files = my_data.files;
-                changeDisplay('#upload-submit', 'inline-block');
-                document.querySelector('#file-name').textContent = upload_input.files[0].name;
-            }
-            reader.readAsDataURL(b64png);
-            changeDisplay('#paste-preview-area', 'block');
-            changeDisplay('#paste-instructions', 'none');
-        }
-    });
 }

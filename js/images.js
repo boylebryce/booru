@@ -1,8 +1,8 @@
 window.onload = init;
 
-const PROTOCOL = document.location.protocol;
-const HOSTNAME = document.location.hostname;
-const WEBROOT = PROTOCOL + '//' + HOSTNAME;
+const protocol = document.location.protocol;
+const hostname = document.location.hostname;
+const webroot = protocol + '//' + hostname;
 
 function init() {
     const imagesContainer = document.querySelector('#images-container');
@@ -16,25 +16,25 @@ function init() {
 
     searchForm.addEventListener('submit', event => {
         event.preventDefault();
-        window.location.assign(WEBROOT + '/booru/images.php?search=' + searchFormInput.value)
+        window.location.assign(webroot + '/booru/images.php?search=' + searchFormInput.value)
     })
 }
 
 async function search(searchString) {
-    const response = await fetch(WEBROOT + '/booru-api/search.php?search=' + searchString);
+    const response = await fetch(webroot + '/booru-api/search.php?search=' + searchString);
     return response.json();
 }
 
 async function getAllImages() {
-    const response = await fetch(WEBROOT + '/booru-api/search.php?all=true');
+    const response = await fetch(webroot + '/booru-api/search.php?all=true');
     return response.json();
 }
 
 function addImage(imagePath, imageID, container) {
     let node = document.createElement('img');
     let link = document.createElement('a');
-    link.href = WEBROOT + '/booru/editor.php?img_id=' + imageID;
-    node.src = WEBROOT + '/booru/img/' + imagePath;
+    link.href = webroot + '/booru/editor.php?img_id=' + imageID;
+    node.src = webroot + '/booru/img/' + imagePath;
     link.appendChild(node);
     container.appendChild(link);
 }

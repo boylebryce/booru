@@ -14,8 +14,8 @@
     '
     <nav>
         <div id="nav-links">
-            <a id="upload-link" class="button" href="index.php">Upload</a>
-            <a id="images-link" class="button" href="images.php">Images</a>
+            <a id="upload-link" class="button" href="/booru/index.php">Upload</a>
+            <a id="images-link" class="button" href="/booru/images.php">Images</a>
         </div>
         <form id="search-form" method="GET" action="images.php">
             <input id="search-form-input" type="text" name="search" placeholder="Search for tags here">
