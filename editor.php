@@ -1,10 +1,9 @@
 <?php
 
-    require_once 'php/paths.php';
-    require_once CONFIG_FILE;
-    require_once 'php/session.php';
-    require_once 'php/functions.php';
-    require_once 'php/shared_html.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/config.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/php/session.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/php/functions.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/php/shared_html.php';
 
     $current_tags = '';
     $db_error = '';

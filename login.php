@@ -1,7 +1,6 @@
 <?php
 
-    require_once 'php/paths.php';
-    require_once CONFIG_FILE;
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/config.php';
 
     session_start();
 
