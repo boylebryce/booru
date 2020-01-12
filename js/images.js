@@ -32,11 +32,8 @@ async function getAllImages() {
 
 function addImage(imagePath, imageID, container) {
     let node = document.createElement('img');
-    let link = document.createElement('a');
-    link.href = webroot + '/booru/editor.php?img_id=' + imageID;
     node.src = webroot + '/booru/img/' + imagePath;
-    link.appendChild(node);
-    container.appendChild(link);
+    container.appendChild(node);
 }
 
 function addImages(images, container) {

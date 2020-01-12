@@ -34,15 +34,14 @@ function init() {
             }).then(response => {
                 return response.json();
             }).then(response => {
+                const node = document.createElement('p');
                 if (response['error']) {
-                    const node = document.createElement('p');
-                    node.textContent = imageData['error'];
-                    uploadForm.append(node);
+                    node.textContent = response['error'];
                 }
                 else {
-                    const editorRedirect = webroot + '/booru/editor.php?img_id=' + response['img_id'];
-                    window.location.href = editorRedirect;
+                    node.textContent = 'Upload successful!';
                 }
+                uploadForm.append(node);
             });
         }
     })
