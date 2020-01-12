@@ -7,5 +7,3 @@ worklog.txt
 
 # Dependencies
 /vendor
-composer.json
-composer.lock
