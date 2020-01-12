@@ -1,4 +1,11 @@
-img/*
-*.txt
-include
-test
+# Stuff in my XAMPP test area
+/test
+worklog.txt
+
+# Image directory
+/img
+
+# Dependencies
+/vendor
+composer.json
+composer.lock
