@@ -1,7 +1,5 @@
 <?php
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/config.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/php/session.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/php/shared_html.php';
 
 ?>
