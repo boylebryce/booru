@@ -4,9 +4,6 @@ const protocol = document.location.protocol;
 const hostname = document.location.hostname;
 const webroot = protocol + '//' + hostname;
 
-// TODO: change this to get valid extensions from API
-const validExtensions = ['png', 'jpg', 'jpeg'];
-
 function init() {
     const uploadForm = document.querySelector('#upload-form');
     const uploadInput = document.querySelector('#upload-input');
@@ -28,7 +25,7 @@ function init() {
             const formData = new FormData();
             formData.append('userfile', file);
 
-            fetch(webroot + '/booru-api/upload.php', {
+            fetch(webroot + '/booru/include/upload.php', {
                 method: 'POST',
                 body: formData
             }).then(response => {
