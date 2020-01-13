@@ -1,7 +1,7 @@
 <?php
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/vendor/autoload.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/shared_html.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/shared-html.php';
 
     use GuzzleHttp\Client;
 
