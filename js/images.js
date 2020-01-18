@@ -35,6 +35,7 @@ function addImage(imagePath, imageID, container) {
     const link = document.createElement('a');
     link.href = webroot + '/booru/editor.php?img_id=' + imageID;
     node.src = webroot + '/booru/img/' + imagePath;
+    node.alt = "Image with ID number " + imageID;
     link.appendChild(node);
     container.appendChild(link);
 }

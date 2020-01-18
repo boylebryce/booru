@@ -89,8 +89,8 @@ function loadImageData(imageID, imageDisplay, currentTagList) {
             currentTagList.firstChild.remove();
         }
 
-        
         imageDisplay.src = '/booru/img/' + image.img_path;
+        imageDisplay.alt = 'Image with ID number ' + imageID;
 
         image.tags.forEach(tag => {
             const link = document.createElement('a');
