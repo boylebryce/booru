@@ -28,6 +28,7 @@ function init() {
             method: 'POST',
             body: formData,
         }).then(response => {
+            addTagsInput.value = '';
             loadImageData(imageID, imageControls, imageDisplay, currentTagList);
         });
     });
