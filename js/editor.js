@@ -94,7 +94,7 @@ function loadImageData(imageID, imageControls, imageDisplay, currentTagList) {
             imageControls.style.display = 'none';
             const node = document.createElement('p');
             node.textContent = 'Image ID ' + imageID + 'does not exist.';
-            imageDisplay.appendChild(node);
+            imageDisplay.append(node);
         }
         else {
             imageDisplay.src = '/booru/img/' + image.img_path;
