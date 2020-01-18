@@ -4,6 +4,7 @@ worklog.txt
 
 # Instance specific
 /include/config.php
+/include/whitelist.php
 
 # Image directory
 /img
