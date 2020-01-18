@@ -1,7 +1,7 @@
 <?php
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/vendor/autoload.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/shared-html.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/config.php';
 
     use GuzzleHttp\Client;
 
@@ -10,7 +10,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['userfile'])) {
         $api_client = new Client([
-            'base_uri' => 'https://nurrz.net',
+            'base_uri' => API_BASE_URI,
         ]);
 
         // Resave uploaded image with correct extension to preserve

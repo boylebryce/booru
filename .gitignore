@@ -2,6 +2,9 @@
 /test
 worklog.txt
 
+# Instance specific
+/include/config.php
+
 # Image directory
 /img
 
