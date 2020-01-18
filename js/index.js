@@ -36,7 +36,7 @@ function init() {
                     node.textContent = response['error'];
                 }
                 else {
-                    node.textContent = 'Upload successful!';
+                    window.location.href = webroot + '/booru/editor.php?img_id=' + response['img_id'];
                 }
                 uploadForm.append(node);
             });

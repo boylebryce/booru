@@ -86,7 +86,6 @@ async function fetchImage(imageID) {
 
 function loadImageData(imageID, imageControls, imageDisplay, currentTagList) {
     fetchImage(imageID).then(image => {
-        // clear current tags on page
         while (currentTagList.firstChild) {
             currentTagList.firstChild.remove();
         }
