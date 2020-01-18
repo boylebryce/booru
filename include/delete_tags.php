@@ -2,6 +2,7 @@
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/vendor/autoload.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/config.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/booru/include/whitelist.php';
 
     use GuzzleHttp\Client;
 
