@@ -5,16 +5,17 @@ const hostname = document.location.hostname;
 const webroot = protocol + '//' + hostname;
 
 function init() {
-    const params = new URLSearchParams(document.location.href.split('?')[1]);
-    const imageID = params.get('img_id');
-    const imageDisplay = document.querySelector('#image-display');
-    const addTagsForm = document.querySelector('#add-tags-form');
-    const addTagsInput = document.querySelector('#add-tags-input');
-    const currentTagList = document.querySelector('#current-tags');
-    const deleteTagsButton = document.querySelector('#delete-tags-submit');
+    const params            = new URLSearchParams(document.location.href.split('?')[1]);
+    const imageID           = params.get('img_id');
+    const imageDisplay      = document.querySelector('#image-display');
+    const imageControls     = document.querySelector('#image-controls');
+    const addTagsForm       = document.querySelector('#add-tags-form');
+    const addTagsInput      = document.querySelector('#add-tags-input');
+    const currentTagList    = document.querySelector('#current-tags');
+    const deleteTagsButton  = document.querySelector('#delete-tags-submit');
     const deleteImageButton = document.querySelector('#delete-image-button');
 
-    loadImageData(imageID, imageDisplay, currentTagList);
+    loadImageData(imageID, imageControls, imageDisplay, currentTagList);
 
     addTagsForm.addEventListener('submit', event => {
         event.preventDefault();
@@ -27,7 +28,7 @@ function init() {
             method: 'POST',
             body: formData,
         }).then(response => {
-            loadImageData(imageID, imageDisplay, currentTagList);
+            loadImageData(imageID, imageControls, imageDisplay, currentTagList);
         });
     });
 
@@ -49,7 +50,7 @@ function init() {
             method: 'POST',
             body: formData,
         }).then(response => {
-            loadImageData(imageID, imageDisplay, currentTagList);
+            loadImageData(imageID, imageControls, imageDisplay, currentTagList);
         });
     });
 
@@ -82,29 +83,34 @@ async function fetchImage(imageID) {
     return response.json();
 }
 
-function loadImageData(imageID, imageDisplay, currentTagList) {
+function loadImageData(imageID, imageControls, imageDisplay, currentTagList) {
     fetchImage(imageID).then(image => {
         // clear current tags on page
         while (currentTagList.firstChild) {
             currentTagList.firstChild.remove();
         }
 
-        imageDisplay.src = '/booru/img/' + image.img_path;
-        imageDisplay.alt = 'Image with ID number ' + imageID;
+        if (image['error']) {
+            imageControls.style.display = 'none';
+        }
+        else {
+            imageDisplay.src = '/booru/img/' + image.img_path;
+            imageDisplay.alt = 'Image with ID number ' + imageID;
 
-        image.tags.forEach(tag => {
-            const link = document.createElement('a');
-            link.href = '/booru/images.php?search=' + tag.tag_label;
-            link.textContent = tag.tag_label;
+            image.tags.forEach(tag => {
+                const link = document.createElement('a');
+                link.href = '/booru/images.php?search=' + tag.tag_label;
+                link.textContent = tag.tag_label;
 
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.value = tag.tag_id;
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.value = tag.tag_id;
 
-            const listItem = document.createElement('li');
-            listItem.appendChild(input);
-            listItem.appendChild(link);
-            currentTagList.appendChild(listItem);
-        });
+                const listItem = document.createElement('li');
+                listItem.appendChild(input);
+                listItem.appendChild(link);
+                currentTagList.appendChild(listItem);
+            });
+        }
     });
 }

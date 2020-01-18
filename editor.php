@@ -15,17 +15,19 @@
         <?php if(isset($nav_html)) echo $nav_html; ?>
         <main>
             <img id="image-display"></img>
-            <form id="add-tags-form">
-                <label for="add-tags-input">Add tags</label>
-                <input type="text" name="add-tags-input" id="add-tags-input" placeholder="Enter space-separated tags here">
-            </form>
-            <form id="delete-tags-form">
-                <label>Current tags</label>
-                <ul id="current-tags">
-                </ul>
-                <input id="delete-tags-submit" type="submit" value="Delete tags">
-            </form>
-            <button id="delete-image-button">Delete image</button>
+            <div id="image-controls">
+                <form id="add-tags-form">
+                    <label for="add-tags-input">Add tags</label>
+                    <input type="text" name="add-tags-input" id="add-tags-input" placeholder="Enter space-separated tags here">
+                </form>
+                <form id="delete-tags-form">
+                    <label>Current tags</label>
+                    <ul id="current-tags">
+                    </ul>
+                    <input id="delete-tags-submit" type="submit" value="Delete tags">
+                </form>
+                <button id="delete-image-button">Delete image</button>
+            </div>
         </main>
     </body>
 </html>
