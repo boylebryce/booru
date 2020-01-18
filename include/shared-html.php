@@ -20,9 +20,11 @@
         <form id="search-form" method="GET" action="images.php">
             <input id="search-form-input" type="text" name="search" placeholder="Search for tags here">
         </form>
+        <!--
         <form id="logout-form" method="POST" action="login.php">
             <input id="logout-form-submit" class="button" type="submit" name="logout" type="submit" value="Logout">
         </form>
+        --!>
     </nav>
     ';
 
