@@ -7,7 +7,7 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <?php if (isset($head_html)) echo $head_html; ?>
     <script async src="/booru/js/editor.js"></script>
     </head>

@@ -5,7 +5,7 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <?php if (isset($head_html)) echo $head_html; ?>
         <link rel="stylesheet" href="/booru/css/index.css">
         <script async src='/booru/js/index.js'></script>
