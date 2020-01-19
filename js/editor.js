@@ -103,7 +103,7 @@ function loadImageData(imageID, imageControls, imageDisplay, currentTagList) {
             image.tags.forEach(tag => {
                 const link = document.createElement('a');
                 let tagQuery = '';
-                if (tag.tag_label.indexOf(' ')) {
+                if (tag.tag_label.indexOf(' ') >= 0) {
                     tagQuery = '"' + tag.tag_label + '"';
                 }
                 else {
