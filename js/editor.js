@@ -102,7 +102,14 @@ function loadImageData(imageID, imageControls, imageDisplay, currentTagList) {
 
             image.tags.forEach(tag => {
                 const link = document.createElement('a');
-                link.href = '/booru/images.php?search=' + tag.tag_label;
+                let tagQuery = '';
+                if (tag.tag_label.indexOf(' ')) {
+                    tagQuery = '"' + tag.tag_label + '"';
+                }
+                else {
+                    tagQuery = tag.tag_label;
+                }
+                link.href = '/booru/images.php?search=' + tagQuery;
                 link.textContent = tag.tag_label;
 
                 const input = document.createElement('input');
